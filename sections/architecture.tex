@@ -1,9 +1,8 @@
-\section{Αρχιτεκτονική Λογισμικού}
+\section{Αρχιτεκτονική Λογισμικού - \textlatin{Back End}}
 Η αρχιτεκτονική πάνω στην οποία χτίστηκε το λογισμικό μας για το κομμάτι του \textlatin{back-end}, αποτελεί μία προσέγγιση βασισμένη στο πρότυπο του \textlatin{"Clean Architecture"}. Πιο συγκεκριμένα το \textlatin{project} είναι χωρισμένο σε 3 υπο‑\textlatin{projects} για καθαρή διαχωριστική αρχιτεκτονική. Καθένα από τα υπο-\textlatin{projects} περιέχει και τα κατάλληλα αρχεία για \textlatin{Dependency Injection} ώστε να λειτουργούν ομαλά μεταξύ τους. Τα υπο-\textlatin{projects} είναι: 
 
 \subsection{\textlatin{WebApi}}
 Αποτελεί το κεντρικό \textlatin{entry point} της εφαρμογής και είναι υπεύθυνο για τη ρύθμιση του \textlatin{ASP.NET Core Web API}. Περιλαμβάνει τη βασική διαμόρφωση της εφαρμογής, των \textlatin{middleware}, καθώς και την εκκίνηση του \textlatin{Web Server}.
-
 
 \subsection{\textlatin{Core}}
 Αποτελεί τον πυρήνα της επιχειρησιακής λογικής της εφαρμογής. Είναι το θεμέλιο του συστήματος και περιέχει τις οντότητες, υπηρεσίες, συμβόλαια, δεδομένα και τον μηχανισμό πρόσβασης στη βάση δεδομένων. Χωρίζεται περαιτέρω στα εξής \textlatin{directories}:
@@ -32,3 +31,22 @@ Yλοποιεί την εξωτερική διεπαφή (\textlatin{API layer})
 Η αρχιτεκτονική είναι \textlatin{feature-first} και κάθε φάκελος αντιστοιχεί σε ξεχωριστό λειτουργικό τομέα (\textlatin{feature}).
 
 Κάθε φάκελος περιέχει τα διακριτά \textlatin{endpoints} της κάθε περίπτωσης, ένα φάκελο με \textlatin{Dto} συμβάσεις για τα δεδομένα που επιστρέφονται στο \textlatin{front-end} και προαιρετικά ένα φάκελο με ομαδοποίηση των \textlatin{endpoints}.
+
+\section{Αρχιτεκτονική Λογισμικού - \textlatin{Front End}}
+Το \textlatin{front-end} κομμάτι του \textlatin{ChronoQuest} περιλαμβάνει την ιστοσελίδα, όπως ακριβώς την είδατε στην ενότητα \textlatin{UI/UX}. Είναι εντελώς ξεχωριστό από το \textlatin{back-end} και λειτουργεί ως \textlatin{"Single Page Application" (SPA)}.
+
+Για την υλοποίηση της ιστοσελίδας, χρησιμοποιήσαμε \href{https://nodejs.org/en}{\textlatin{Node.js}} σε συνδυασμό με το \textlatin{JavaScript Meta-Framework} \href{https://svelte.dev/}{\textlatin{SvelteKit}}. Η αρχιτεκτονική δεν διαφέρει πολύ από αυτή του \textlatin{back-end} καθώς και εδώ ακολουθούμε την \textlatin{feature-first} προσέγγιση στην οργάνωση των αρχείων μας, που η μεν οργάνωση καθοδήγείται επίσης από τα πρότυπα του \textlatin{SvelteKit}\footnote{Μπορείτε να μελετήσετε τη δομή ενός \textlatin{SvelteKit project} \href{https://svelte.dev/docs/kit/project-structure}{εδώ}}. Δεν θα δούμε τις δομικές απαιτήσεις του \textlatin{framework} με λεπτομέρεια, αλλά θα αναλύσουμε την δική μας οργάνωση. Το πρότζεκτ έχει δύο κυρίους καταλόγους εντός του φακέλου \textlatin{/src}:
+
+\subsection{Κατάλογος: \textlatin{/lib}}
+Σε αυτό το φάκελο οργανώνουμε ανα \textlatin{feature} τα:
+\begin{itemize}
+    \item \textlatin{\textbf{Types}}: Εφόσον δουλεύουμε με \textlatin{TypeScript}, μας δίνεται η δυνατότητα να ορίσουμε διεπαφές για τα δεδομένα που θα χρησιμοποιούμε και θα δεχόμαστε, έτσι θα είμαστε πολύ πιο οργανωμένοι και παραγωγικοί.
+    \item \textlatin{\textbf{Components}}: Τα θεμέλια του \textlatin{UI}, με αυτά χτίζουμε τη κάθε σελίδα.
+\end{itemize}
+Επίσης, στο φάκελο υπάρχουν και γενικής χρήσεως αρχεία (\textlatin{common}) όπως:
+\begin{itemize}
+    \item \textlatin{\textbf{HTTP Client Wrapper}}: Μια ειδική κλάση που στα εσωτερικά της χρησιμοποιεί το κλασικό \textlatin{Fetch API} της \textlatin{JavaScript} και το τυλίγει με επιπλέον λειτουργικότητα για να καλύψει όλες τις αναγκές της συνομιλίας \textlatin{API - Site}.
+    \item \textbf{\textlatin{Components} Γενικής Χρήσεως}: Επαναχρησιμοποιήσημα βασικά \textlatin{components} όπως ένα κουμπί, γραφήματα και \textlatin{pop-up} διάλογος.
+\end{itemize}
+\subsection{Κατάλογος: \textlatin{/routes}}
+Σε αυτό το φακέλο τοποθετούμε κάθε σελίδα και \textlatin{layout}. Ακολουθεί αυστήρα της "συμβάσεις" του \textlatin{SvelteKit}, βασισμενές στην αρχή του \textlatin{File-Based Routing}.
